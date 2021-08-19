@@ -4,8 +4,7 @@ import bisect
 import plotly
 import plotly.graph_objs as go
 import numpy as np
-import tempfile
-import pathlib
+from gc_scripts.utils import get_temp_file, load_web_page
 
 # Get activity (used to get the date)
 activity = GC.activityMetrics()
@@ -18,9 +17,8 @@ zone = GC.athleteZones(date=activity["date"], sport="bike")
 intervals = GC.activityIntervals()
 type_title = "USER"
 
-# Define tempory file
-temp_file = tempfile.NamedTemporaryFile(
-    mode="w+t", prefix="GC_", suffix=".html", delete=False)
+temp_file = get_temp_file()
+
 
 # Define GC background color
 gc_bg_color = 'rgb(52,52,52)'
@@ -188,4 +186,4 @@ else:
     f.close()
 
 # Load the webpage
-GC.webpage(pathlib.Path(temp_file.name).as_uri())
+load_web_page(GC, temp_file)
